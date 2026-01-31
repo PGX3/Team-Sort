@@ -1,5 +1,5 @@
 // Elementos do DOM
-gitconst pasteSection = document.getElementById('paste-section');
+const pasteSection = document.getElementById('paste-section');
 const verifySection = document.getElementById('verify-section');
 const configSection = document.getElementById('config-section');
 const resultSection = document.getElementById('result-section');
@@ -28,20 +28,20 @@ let confirmedPlayers = [];
 let playersPerTeam = 0;
 let numberOfTeams = 0;
 
-// Cores para os times (cores vibrantes e distintas)
+// Cores para os times
 const teamColors = [
-    { bg: '#667eea', border: '#667eea', name: 'Time A' },
-    { bg: '#f5576c', border: '#f5576c', name: 'Time B' },
-    { bg: '#2ed573', border: '#2ed573', name: 'Time C' },
-    { bg: '#ffa502', border: '#ffa502', name: 'Time D' },
-    { bg: '#3742fa', border: '#3742fa', name: 'Time E' },
-    { bg: '#ff4757', border: '#ff4757', name: 'Time F' },
-    { bg: '#1dd1a1', border: '#1dd1a1', name: 'Time G' },
-    { bg: '#ff9f43', border: '#ff9f43', name: 'Time H' },
-    { bg: '#5f27cd', border: '#5f27cd', name: 'Time I' },
-    { bg: '#ee5253', border: '#ee5253', name: 'Time J' },
-    { bg: '#10ac84', border: '#10ac84', name: 'Time K' },
-    { bg: '#ff6b81', border: '#ff6b81', name: 'Time L' }
+    { border: '#007aff', name: 'Time A' },
+    { border: '#ff3b30', name: 'Time B' },
+    { border: '#34c759', name: 'Time C' },
+    { border: '#ff9500', name: 'Time D' },
+    { border: '#5856d6', name: 'Time E' },
+    { border: '#ff2d55', name: 'Time F' },
+    { border: '#00c7be', name: 'Time G' },
+    { border: '#ffcc00', name: 'Time H' },
+    { border: '#af52de', name: 'Time I' },
+    { border: '#ff6b6b', name: 'Time J' },
+    { border: '#5ac8fa', name: 'Time K' },
+    { border: '#64d2ff', name: 'Time L' }
 ];
 
 // Função para obter cor do time
@@ -51,21 +51,11 @@ function getTeamColor(index) {
 
 // Função para extrair nome de uma linha
 function extractName(line) {
-    // Remove números no início (1-, 1., 1 , etc.)
     let name = line.replace(/^[\d]+[\.\-\)\s]*[\d\-]*/, '').trim();
-    
-    // Remove parênteses e tudo dentro (se for as 19h), (19h), etc.
     name = name.replace(/\s*\([^)]*\)\s*/g, '').trim();
-    
-    // Remove colchetes e tudo dentro
     name = name.replace(/\s*\[[^\]]*\]\s*/g, '').trim();
-    
-    // Remove traços e conteúdo após (ex: "Nome - observação")
     name = name.replace(/\s*[\-–—]\s*.*$/, '').trim();
-    
-    // Remove números no final
     name = name.replace(/\s*\d+\s*$/, '').trim();
-    
     return name;
 }
 
@@ -78,7 +68,6 @@ function processNames() {
         return;
     }
     
-    // Divide por linhas e filtra
     const lines = text.split('\n');
     allPlayers = [];
     
@@ -99,7 +88,6 @@ function processNames() {
     }
     
     confirmedPlayers = [...allPlayers];
-    
     showVerifySection();
 }
 
@@ -132,7 +120,6 @@ function renderNamesPreview() {
 function togglePlayer(index) {
     confirmedPlayers[index].selected = !confirmedPlayers[index].selected;
     
-    // Atualizar visual
     const chips = namesPreviewDiv.querySelectorAll('.name-chip');
     if (confirmedPlayers[index].selected) {
         chips[index].classList.remove('removed');
@@ -150,15 +137,11 @@ function confirmNames() {
         return;
     }
     
-    // Reset input
     playersPerTeamInput.value = '';
-    
     verifySection.classList.add('hidden');
     configSection.classList.remove('hidden');
-    
     totalPlayersSpan.textContent = confirmedPlayers.length;
     
-    // Sugerir número de jogadores por time baseado no total
     const suggestedPlayers = Math.ceil(confirmedPlayers.length / 2);
     playersPerTeamInput.value = suggestedPlayers;
 }
@@ -173,7 +156,7 @@ function configureTeamSize() {
     }
     
     if (value > confirmedPlayers.length) {
-        alert(`Você só tem ${confirmedPlayers.length} jogadores confirmados. O máximo por time é ${confirmedPlayers.length}.`);
+        alert(`Você só tem ${confirmedPlayers.length} jogadores confirmados.`);
         return;
     }
     
@@ -193,22 +176,17 @@ function shuffleArray(array) {
 
 // Função para sortear múltiplos times
 function sortMultipleTeams() {
-    // Extrai apenas os nomes
     const playerNames = confirmedPlayers.map(p => p.name);
-    
-    // Embaralhar jogadores
     const shuffledPlayers = shuffleArray(playerNames);
     
-    // Calcular número de times necessários
     numberOfTeams = Math.ceil(shuffledPlayers.length / playersPerTeam);
     
-    // Dividir jogadores em times
     const teams = [];
     let currentIndex = 0;
     
     for (let i = 0; i < numberOfTeams; i++) {
         const teamSize = (i === numberOfTeams - 1) 
-            ? shuffledPlayers.length - currentIndex  // Último time pode ter menos
+            ? shuffledPlayers.length - currentIndex
             : playersPerTeam;
         
         const team = shuffledPlayers.slice(currentIndex, currentIndex + teamSize);
@@ -216,10 +194,7 @@ function sortMultipleTeams() {
         currentIndex += teamSize;
     }
     
-    // Renderizar times
     renderMultipleTeams(teams);
-    
-    // Mostrar resultado
     configSection.classList.add('hidden');
     resultSection.classList.remove('hidden');
 }
@@ -228,26 +203,22 @@ function sortMultipleTeams() {
 function renderMultipleTeams(teams) {
     teamsContainer.innerHTML = '';
     
-    // Atualizar informações
     totalTeamsSpan.textContent = teams.length;
     playersPerTeamResultSpan.textContent = playersPerTeam;
     
     teams.forEach((teamMembers, teamIndex) => {
         const color = getTeamColor(teamIndex);
         
-        // Criar elemento do time
         const teamDiv = document.createElement('div');
         teamDiv.className = 'team';
         teamDiv.style.animationDelay = `${teamIndex * 0.1}s`;
         
-        // Título do time
         const title = document.createElement('h3');
         title.textContent = color.name;
         title.style.color = color.border;
         title.style.borderColor = color.border;
         teamDiv.appendChild(title);
         
-        // Lista de jogadores
         const ul = document.createElement('ul');
         
         teamMembers.forEach((member, memberIndex) => {
