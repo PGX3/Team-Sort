@@ -1,5 +1,5 @@
 // Elementos do DOM
-const pasteSection = document.getElementById('paste-section');
+gitconst pasteSection = document.getElementById('paste-section');
 const verifySection = document.getElementById('verify-section');
 const configSection = document.getElementById('config-section');
 const resultSection = document.getElementById('result-section');
