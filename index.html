@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteador de Times</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sorteador de Times</h1>
+        
+        <!-- Cola a lista de jogadores -->
+        <div id="paste-section" class="section">
+            <h2>Passo 1: Cole a Lista de Jogadores</h2>
+            <p class="info">Cole a lista com os nomes. O sistema会自动mente limpará números, parênteses e outras informações.</p>
+            <textarea id="names-textarea" placeholder="Exemplo:
+1- PG 
+2- Leandro (se for as 19h)
+3- Gabriel 
+4- Junior 
+5- Lucas Bitencourt (19)
+6- davi"></textarea>
+            <button id="btn-process" class="btn btn-primary">Processar Lista</button>
+        </div>
+
+        <!-- Verifica e edita os nomes -->
+        <div id="verify-section" class="section hidden">
+            <h2>Passo 2: Verifique os Nomes</h2>
+            <p class="success"><span id="names-count">0</span> nomes encontrados - Clique para remover</p>
+            <div id="names-preview" class="names-preview"></div>
+            <div class="button-group">
+                <button id="btn-confirm-names" class="btn btn-primary">Confirmar Nomes</button>
+                <button id="btn-back-paste" class="btn btn-secondary">Voltar</button>
+            </div>
+        </div>
+
+        <!-- Configuração do número de jogadores por time -->
+        <div id="config-section" class="section hidden">
+            <h2>Passo 3: Configure os Times</h2>
+            <div class="input-group">
+                <label for="players-per-team">Quantos jogadores por time?</label>
+                <div class="input-row">
+                    <input type="number" id="players-per-team" min="1" max="20" placeholder="Ex: 5">
+                    <button id="btn-config" class="btn btn-primary">Criar Times</button>
+                </div>
+            </div>
+            <p class="info">Total de jogadores: <span id="total-players">0</span></p>
+        </div>
+
+        <!-- Resultado dos times -->
+        <div id="result-section" class="section hidden">
+            <h2>Resultado do Sorteio</h2>
+            <p class="info"><span id="total-teams">0</span> times com <span id="players-per-team-result">0</span> jogadores por time</p>
+            <div id="teams-container" class="teams-grid"></div>
+            <div class="button-group">
+                <button id="btn-sort-again" class="btn btn-sort">Sortear Novamente</button>
+                <button id="btn-reset" class="btn btn-secondary">Novo Sorteio</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
+
